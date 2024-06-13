@@ -3,10 +3,10 @@ kind: Component
 metadata:
   name: ${{ values.name | dump }}
   annotations:
-    github.com/project-slug: Makinates/tf-aws-eks
+    github.com/project-slug: Makinates/smpls-tf-ec2
     # github.com/project-slug: Makinates/${{ values.name }}
-  description: ${{ values.name }} running on AWS EKS cluster managed by Terraform
+  description: ${{ values.name }} running on AWS EC2 instance managed by Terraform
 spec:
   type: service
-  owner: user:guest
+  owner: user:mrdankuta
   lifecycle: experimental
