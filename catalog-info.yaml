@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: smpls-ec2-tmplt
+  annotations:
+    github.com/project-slug: Makinates/smpls-ec2-tmplt
+spec:
+  type: other
+  lifecycle: unknown
+  owner: mrdankuta
