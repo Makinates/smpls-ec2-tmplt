@@ -5,7 +5,7 @@ metadata:
   title: Node.js App on AWS EC2 Instance
   description: Deploy a Node.js App on AWS EC2 Instance using Terraform
 spec:
-  owner: user:mrdankuta
+  owner: Makinates
   type: service
 
   parameters:
