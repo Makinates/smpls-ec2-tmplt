@@ -1,10 +1,11 @@
 apiVersion: backstage.io/v1alpha1
-kind: Template
+kind: Component
 metadata:
-  name: smpls-ec2-tmplt
+  name: ${{ values.name | dump }}
   annotations:
-    github.com/project-slug: Makinates/smpls-ec2-tmplt
+    github.com/project-slug: Makinates/${{ values.name }}
+  description: ${{ values.name }} running on AWS EC2 instance managed by Terraform
 spec:
-  type: other
-  lifecycle: unknown
-  owner: mrdankuta
+  type: service
+  owner: user:mrdankuta
+  lifecycle: experimental
