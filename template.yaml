@@ -17,18 +17,14 @@ spec:
         name:
           title: Project Name
           type: string
-          description: Unique name for your app
+          description: Unique name. No spaces. No symbols.
           maxLength: 50
           ui:autofocus: true
-          ui:options:
-            rows: 5
           pattern: '^[a-zA-Z0-9_-]+$'
         description:
           title: Project Description
           type: string
-          description: A short description of your app
-          ui:options:
-            rows: 5
+          description: A short description
     - title: EC2 Configuration
       required:
         - instanceName
@@ -68,8 +64,8 @@ spec:
       action: fetch:template
       input:
         url: https://github.com/Makinates/smpls-ec2-tmplt
-        copyWithoutTemplates:
-          - .github/**/*yaml
+        copyWithoutTemplating:
+          - .github/**/*.yaml
           - infrastructure/*.tf
           - src/*.*
         values:
@@ -80,6 +76,8 @@ spec:
       action: publish:github
       input:
         allowedHosts: ['github.com']
+        repoVisibility: public
+        defaultBranch: 'main'
         description: This is ${{ parameters.name }}
         repoUrl: 'github.com?repo=${{ parameters.name }}&owner=Makinates'
     # Start a GitHub Action to build an EC2 instance with Terraform
@@ -92,6 +90,7 @@ spec:
         branchOrTagName: 'main'
         workflowInputs:
           instanceName: ${{ parameters.instanceName }}
+          instanceType: ${{ parameters.instanceType }}
           awsRegion: ${{ parameters.region }}
           action: ${{ parameters.action }}
     # The final step is to register our new component in the catalog.

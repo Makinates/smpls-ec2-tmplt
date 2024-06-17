@@ -6,6 +6,9 @@ on:
       instanceName:
         description: 'Name of the EC2 Instance'
         required: true
+      instanceType:
+        description: 'Type of the EC2 Instance'
+        required: true
       awsRegion:
         description: 'AWS Region for the instance'
         required: true
@@ -27,14 +30,17 @@ jobs:
     - name: Terraform Init
       run: terraform init
       working-directory: infrastructure
+
     - name: Terraform Format
       run: terraform fmt
       working-directory: infrastructure
+
     - name: Terraform Validate
       run: terraform validate
       working-directory: infrastructure
+
     - name: Terraform Apply
-      run: terraform apply -var instanceName=${{ github.event.inputs.instanceName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -auto-approve
+      run: terraform apply -var instanceName=${{ github.event.inputs.instanceName }} -var instanceType=${{ github.event.inputs.instanceType }} -var awsRegion=${{ github.event.inputs.awsRegion }} -auto-approve
       working-directory: infrastructure
 
   destroy_instance:
@@ -43,17 +49,22 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
+
     - name: Terraform Init
       run: terraform init
       working-directory: infrastructure
+
     - name: Terraform FMT
       run: terraform fmt
       working-directory: infrastructure
+
     - name: Terraform Validate
       run: terraform validate
       working-directory: infrastructure
+      
     - name: Terraform Destroy
-      run: terraform destroy -var instanceName=${{ github.event.inputs.instanceName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -auto-approve
+      run: terraform destroy -var instanceName=${{ github.event.inputs.instanceName }} -var instanceType=${{ github.event.inputs.instanceType }} -var awsRegion=${{ github.event.inputs.awsRegion }} -auto-approve
       working-directory: infrastructure
