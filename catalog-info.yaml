@@ -4,6 +4,7 @@ metadata:
   name: ${{ values.name | dump }}
   annotations:
     github.com/project-slug: Makinates/${{ values.name }}
+    backstage.io/techdocs-ref: dir:.
   description: ${{ values.name }} running on AWS EC2 instance managed by Terraform
 spec:
   type: service
