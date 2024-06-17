@@ -2,41 +2,46 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: ec2-instance
-  title: Node.js App on AWS EC2 Instance
-  description: Deploy a Node.js App on AWS EC2 Instance using Terraform
+  title: Provision an AWS EC2 Instance
+  description: Provision AWS EC2 Instance using Terraform
 spec:
-  owner: Makinates
+  owner: user:mrdankuta
   type: service
 
   parameters:
-    - title: Fill in some steps
+    - title: Project Details
       required:
         - name
+        - description
       properties:
         name:
-          title: App Name
+          title: Project Name
           type: string
           description: Unique name for your app
+          maxLength: 50
           ui:autofocus: true
           ui:options:
             rows: 5
-    - title: Choose a Repo location
-      required:
-        - repoUrl
-      properties:
-        repoUrl:
-          title: Repository Location
+          pattern: '^[a-zA-Z0-9_\\-]{1,200}'
+        description:
+          title: Project Description
           type: string
-          ui:field: RepoUrlPicker
+          description: A short description of your app
           ui:options:
-            allowedHosts:
-              - github.com
-    - title: Basic EC2 Cluster Configuration
+            rows: 5
+    - title: EC2 Configuration
       required:
+        - instanceType
         - instanceName
         - region
         - action
       properties:
+        instanceType:
+          title: EC2 Instance Type
+          type: string
+          enum:
+            - 't2-micro'
+            - 't2-small'
         instanceName:
           title: Instance Name
           type: string
@@ -62,7 +67,11 @@ spec:
       name: Fetch Base
       action: fetch:template
       input:
-        url: ./content
+        url: https://github.com/Makinates/smpls-ec2-tmplt
+        copyWithoutTemplating:
+          - .github/**/*yml
+          - infrastructure/*.tf
+          - src/*.*
         values:
           name: ${{ parameters.name }}
     # This step publishes the contents of the working directory to GitHub.
@@ -72,14 +81,14 @@ spec:
       input:
         allowedHosts: ['github.com']
         description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.repoUrl }}
+        repoUrl: 'github.com?repo=${{ parameters.name }}&owner=Makinates'
     # Start a GitHub Action to build an EC2 instance with Terraform
     - id: github-action
       name: Trigger GitHub Action
       action: github:actions:dispatch
       input:
         workflowId: manage-ec2.yaml
-        repoUrl: 'github.com?repo=smpls-tf-ec2&owner=Makinates'
+        repoUrl: 'github.com?repo=${{ parameters.name }}&owner=Makinates'
         branchOrTagName: 'main'
         workflowInputs:
           instanceName: ${{ parameters.instanceName }}
