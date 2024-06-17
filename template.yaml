@@ -22,7 +22,7 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
-          pattern: '^[a-zA-Z0-9_\\-]{1,200}'
+          pattern: '^[a-zA-Z0-9]+$'
         description:
           title: Project Description
           type: string
@@ -31,22 +31,22 @@ spec:
             rows: 5
     - title: EC2 Configuration
       required:
-        - instanceType
         - instanceName
+        - instanceType
         - region
         - action
       properties:
+        instanceName:
+          title: Instance Name
+          type: string
+          description: The name of your EC2 instance
+          ui:autofocus: true
         instanceType:
           title: EC2 Instance Type
           type: string
           enum:
             - 't2-micro'
             - 't2-small'
-        instanceName:
-          title: Instance Name
-          type: string
-          description: The name of your EC2 instance
-          ui:autofocus: true
         region:
           title: AWS Region
           type: string
