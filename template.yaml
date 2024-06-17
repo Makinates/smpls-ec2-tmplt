@@ -22,7 +22,7 @@ spec:
           ui:autofocus: true
           ui:options:
             rows: 5
-          pattern: '^[a-zA-Z0-9]+$'
+          pattern: '^[a-zA-Z0-9_-]+$'
         description:
           title: Project Description
           type: string
