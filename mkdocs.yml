@@ -1,5 +1,5 @@
-site_name: ${{values.component_id}}
-site_description: ${{values.description}}
+site_name: Test
+site_description: Testing
 
 nav:
   - Introduction: index.md
