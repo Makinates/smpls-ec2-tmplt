@@ -64,8 +64,8 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        # copyWithoutTemplating:
-        #   - .github/**/*.yaml
+        copyWithoutTemplating:
+          - ./skeleton/.github/**/*.yaml
         #   - infrastructure/*.tf
         #   - src/*.*
         values:
