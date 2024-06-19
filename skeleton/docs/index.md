@@ -1,4 +1,4 @@
-# ${{ parameters.name }}
+# ${{ values.name }}
 
 ## Getting started
 
