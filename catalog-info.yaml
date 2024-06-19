@@ -1,13 +1,12 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  # name: ${{ values.name | dump }}
-  name: sample-ec2
+  name: ${{ parameters.name | dump }}
   annotations:
     github.com/project-slug: Makinates/smpls-ec2-tmplt
     github.com/actions-workflow: manage-ec2.yaml
     backstage.io/techdocs-ref: dir:.
-  description: sample-ec2 running on AWS EC2 instance managed by Terraform
+  description: ${{ parameters.name }} running on AWS EC2 instance managed by Terraform
 spec:
   type: service
   owner: user:mrdankuta
