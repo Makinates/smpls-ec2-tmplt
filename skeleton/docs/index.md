@@ -1,6 +1,4 @@
-# ${{ values.component_id }}
-
-${{ values.description }}
+# ${{ parameters.name }}
 
 ## Getting started
 
