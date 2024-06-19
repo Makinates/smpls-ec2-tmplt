@@ -105,8 +105,8 @@ spec:
         workflowId: manage-ec2.yaml
         repoUrl: |
           ${{ parameters.action === 'apply'
-            ? "github.com?repo=" + parameters.name + "&owner=Makinates"
-            : parameters.repoUrl }}
+              ? 'https://github.com/Makinates/' + parameters.name
+              : parameters.repoUrl }}
         branchOrTagName: "main"
         workflowInputs:
           instanceName: ${{ parameters.instanceName }}
