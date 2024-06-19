@@ -3,7 +3,7 @@ kind: Component
 metadata:
   name: ${{ values.name | dump }}
   annotations:
-    github.com/project-slug: Makinates/${{ values.name }}
+    # github.com/project-slug: Makinates/${{ values.name }}
     github.com/actions-workflow: manage-ec2.yaml
     backstage.io/techdocs-ref: dir:.
   description: ${{ values.name }} running on AWS EC2 instance managed by Terraform
