@@ -9,6 +9,17 @@ spec:
   type: service
 
   parameters:
+    - title: Action
+      required:
+        - action
+      properties:
+        action:
+          title: Action
+          type: string
+          description: Action to perform (apply/destroy)
+          enum:
+            - apply
+            - destroy
     - title: Project Details
       required:
         - name
@@ -25,12 +36,13 @@ spec:
           title: Project Description
           type: string
           description: A short description
+      ui:options:
+        compute: parameters.action === 'apply'
     - title: EC2 Configuration
       required:
         - instanceName
         - instanceType
         - region
-        - action
       properties:
         instanceName:
           title: Instance Name
@@ -50,13 +62,22 @@ spec:
           enum:
             - us-east-1
             - us-west-2
-        action:
-          title: Action
+      ui:options:
+        compute: parameters.action === 'apply'
+    - title: Existing Repository
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository URL
           type: string
-          description: Action to perform (apply/destroy)
-          enum:
-            - apply
-            - destroy
+          description: The URL of the repository containing the Terraform definition
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+      ui:options:
+        compute: parameters.action === 'destroy'
 
   steps:
     - id: fetch-base
@@ -66,7 +87,7 @@ spec:
         url: ./skeleton
         values:
           name: ${{ parameters.name }}
-    # This step publishes the contents of the working directory to GitHub.
+      if: ${{ parameters.action === 'apply' }}
     - id: publish
       name: Publish
       action: publish:github
@@ -76,33 +97,33 @@ spec:
         defaultBranch: "main"
         description: This is ${{ parameters.name }}
         repoUrl: "github.com?repo=${{ parameters.name }}&owner=Makinates"
-        # sourcePath:
-    # Start a GitHub Action to build an EC2 instance with Terraform
+      if: ${{ parameters.action === 'apply' }}
     - id: github-action
       name: Trigger GitHub Action
       action: github:actions:dispatch
       input:
         workflowId: manage-ec2.yaml
-        repoUrl: "github.com?repo=${{ parameters.name }}&owner=Makinates"
+        repoUrl: ${{ 'https://github.com/Makinates/' + parameters.name if parameters.action === 'apply' else parameters.repoUrl }}
         branchOrTagName: "main"
         workflowInputs:
           instanceName: ${{ parameters.instanceName }}
           instanceType: ${{ parameters.instanceType }}
           awsRegion: ${{ parameters.region }}
           action: ${{ parameters.action }}
-    # The final step is to register our new component in the catalog.
     - id: register
       name: Register
       action: catalog:register
       input:
         repoContentsUrl: "${{ steps.publish.output.repoContentsUrl }}"
         catalogInfoPath: "/catalog-info.yaml"
+      if: ${{ parameters.action === 'apply' }}
 
-  # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
       - title: Repository
         url: ${{ steps['publish'].output.remoteUrl }}
+        if: ${{ parameters.action === 'apply' }}
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
+        if: ${{ parameters.action === 'apply' }}
