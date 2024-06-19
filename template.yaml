@@ -103,10 +103,7 @@ spec:
       action: github:actions:dispatch
       input:
         workflowId: manage-ec2.yaml
-        repoUrl: |
-          ${{ parameters.action === 'apply'
-              ? 'https://github.com/Makinates/' + parameters.name
-              : parameters.repoUrl }}
+        repoUrl: ${{ 'https://github.com/Makinates/' + parameters.name if parameters.action === 'apply' else parameters.repoUrl }}
         branchOrTagName: "main"
         workflowInputs:
           instanceName: ${{ parameters.instanceName }}
