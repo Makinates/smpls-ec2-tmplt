@@ -95,7 +95,7 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: "https://github.com/Makinates/${{ parameters.name }}"
+        repoContentsUrl: "${{ steps.publish.output.repoContentsUrl }}"
         catalogInfoPath: "/catalog-info.yaml"
 
   # Outputs are displayed to the user after a successful execution of the template.
