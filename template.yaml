@@ -20,7 +20,7 @@ spec:
           description: Unique name. No spaces. No symbols.
           maxLength: 50
           ui:autofocus: true
-          pattern: '^[a-zA-Z0-9_-]+$'
+          pattern: "^[a-zA-Z0-9_-]+$"
         description:
           title: Project Description
           type: string
@@ -41,8 +41,8 @@ spec:
           title: EC2 Instance Type
           type: string
           enum:
-            - 't2-micro'
-            - 't2-small'
+            - "t2-micro"
+            - "t2-small"
         region:
           title: AWS Region
           type: string
@@ -71,23 +71,23 @@ spec:
         values:
           name: ${{ parameters.name }}
     # This step publishes the contents of the working directory to GitHub.
-    - id: publish
-      name: Publish
-      action: publish:github
-      input:
-        allowedHosts: ['github.com']
-        repoVisibility: public
-        defaultBranch: 'main'
-        description: This is ${{ parameters.name }}
-        repoUrl: 'github.com?repo=${{ parameters.name }}&owner=Makinates'
+    # - id: publish
+    #   name: Publish
+    #   action: publish:github
+    #   input:
+    #     allowedHosts: ['github.com']
+    #     repoVisibility: public
+    #     defaultBranch: 'main'
+    #     description: This is ${{ parameters.name }}
+    #     repoUrl: 'github.com?repo=${{ parameters.name }}&owner=Makinates'
     # Start a GitHub Action to build an EC2 instance with Terraform
     - id: github-action
       name: Trigger GitHub Action
       action: github:actions:dispatch
       input:
         workflowId: manage-ec2.yaml
-        repoUrl: 'github.com?repo=${{ parameters.name }}&owner=Makinates'
-        branchOrTagName: 'main'
+        repoUrl: "github.com?repo=smpls-ec2-tmplt&owner=Makinates"
+        branchOrTagName: "main"
         workflowInputs:
           instanceName: ${{ parameters.instanceName }}
           instanceType: ${{ parameters.instanceType }}
@@ -98,14 +98,14 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
+        # repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml"
 
   # Outputs are displayed to the user after a successful execution of the template.
   output:
     links:
-      - title: Repository
-        url: ${{ steps['publish'].output.remoteUrl }}
+      # - title: Repository
+      #   url: ${{ steps['publish'].output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps['register'].output.entityRef }}
