@@ -80,7 +80,7 @@ spec:
         defaultBranch: "main"
         description: This is ${{ parameters.name }}
         repoUrl: "github.com?repo=${{ parameters.name }}&owner=Makinates"
-        sourcePath:
+        # sourcePath:
     # Start a GitHub Action to build an EC2 instance with Terraform
     - id: github-action
       name: Trigger GitHub Action
