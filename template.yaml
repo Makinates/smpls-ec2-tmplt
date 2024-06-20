@@ -20,8 +20,10 @@ spec:
           enum:
             - apply
             - destroy
-
     - title: Project Details
+      required:
+        - name
+        - description
       properties:
         name:
           title: Project Name
@@ -34,20 +36,13 @@ spec:
           title: Project Description
           type: string
           description: A short description
-
-      dependencies:
-        action:
-          allOf:
-            - if:
-                properties:
-                  action:
-                    const: apply
-              then:
-                required:
-                  - name
-                  - description
-
+      ui:options:
+        compute: ${{if parameters.action === 'apply'}}
     - title: EC2 Configuration
+      required:
+        - instanceName
+        - instanceType
+        - region
       properties:
         instanceName:
           title: Instance Name
@@ -67,21 +62,11 @@ spec:
           enum:
             - us-east-1
             - us-west-2
-
-      dependencies:
-        action:
-          allOf:
-            - if:
-                properties:
-                  action:
-                    const: apply
-              then:
-                required:
-                  - instanceName
-                  - instanceType
-                  - region
-
+      ui:options:
+        compute: ${{if parameters.action === 'apply'}}
     - title: Existing Repository
+      required:
+        - repoUrl
       properties:
         repoUrl:
           title: Repository URL
@@ -91,17 +76,8 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-
-      dependencies:
-        action:
-          allOf:
-            - if:
-                properties:
-                  action:
-                    const: destroy
-              then:
-                required:
-                  - repoUrl
+      ui:options:
+        compute: ${{if parameters.action === 'destroy'}}
 
   steps:
     - id: fetch-base
