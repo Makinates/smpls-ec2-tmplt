@@ -37,7 +37,7 @@ spec:
           type: string
           description: A short description
       ui:options:
-        compute: parameters.action === 'apply'
+        compute: ${{if parameters.action === 'apply'}}
     - title: EC2 Configuration
       required:
         - instanceName
@@ -63,7 +63,7 @@ spec:
             - us-east-1
             - us-west-2
       ui:options:
-        compute: parameters.action === 'apply'
+        compute: ${{if parameters.action === 'apply'}}
     - title: Existing Repository
       required:
         - repoUrl
@@ -77,7 +77,7 @@ spec:
             allowedHosts:
               - github.com
       ui:options:
-        compute: parameters.action === 'destroy'
+        compute: ${{if parameters.action === 'destroy'}}
 
   steps:
     - id: fetch-base
