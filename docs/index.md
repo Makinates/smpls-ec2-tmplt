@@ -1,4 +1,4 @@
-# ${{ values.name }}
+# Template Docs
 
 ## Getting started
 

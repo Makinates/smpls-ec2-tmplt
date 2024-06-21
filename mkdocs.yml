@@ -1,8 +1,9 @@
-site_name: ${{values.name}}
+site_name: Backstage Template
 # site_description: ${{values.description}}
 
 nav:
   - Introduction: index.md
+  - Template Usage: 03-Using-a-Backstage-Template.md
 
 plugins:
   - techdocs-core
